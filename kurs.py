@@ -39,7 +39,12 @@ def sensDHT():
     humi /= 10
     temp /= 10
     return humi,temp
-   
+
+def create_log(err):
+    file = open('actual.txt','a')
+    file.write(err)
+    file.close()
+    
 def read_data():
     try:
         global pressure
@@ -47,13 +52,20 @@ def read_data():
         global humidity
         pressure,temperature1 = sensBMP() #read inf from BMP180
         humidity, temperature2 = sensDHT() #read inf from DHT22
-        temperature = (temperature1 + temperature2)/2    
-        display.lcd_display_string("pressure:"+str(pressure/133.3), 1) # Write line of text to first line of display
-        display.lcd_display_string("temp"+str(temperature)+"Hum"+str(humidity), 2)
+        temperature = (temperature1 + temperature2)/2
+        pressure /= 133.322
+        display.lcd_display_string("pressure:"+str(pressure), 1) # Write line of text to first line of display
+        display.lcd_display_string("temp"+str("%.2f"%round(temperature,2))
+                                   +"Hum"+str("%.2f"%round(humidity,2)), 2)
+        file = open('actual.txt','w')
+        file.write("%.2f"%round(temperature,2))
+        file.write("%.2f"%round(pressure,2))
+        file.write("%.2f"%round(humidity,2))
+        file.close()
     
-    except Exception as e:  
-        print(e)
-        display.lcd_clear()
+    except Exception as err:  
+        print("Error: ", err)
+        create_log(err)
         
 def write_to_db():
     try:
@@ -62,17 +74,20 @@ def write_to_db():
         now = datetime.datetime.now()
         date = now.year*10000 + now.month*100 + now.day
         ttime = now.hour*100 + now.minute
-        data = (date,time,temperature,pressure,humidity)
-        cursor.execute("INSERT INTO data VALUES (?,?,?,?,?)", data)
+        data = (date,ttime,temperature,pressure,humidity)
+        sql = """INSERT INTO data
+                (date,time,temperature,pressure,humidity)
+                VALUES (?,?,?,?,?)"""
+        cursor.execute(sql, data)
         
     except sqlite3.DatabaseError as err:       
         print("Error: ", err)
+        create_log(err)
     else:
         conn.commit() 
-    
+read_data()   
 schedule.every(1).minutes.do(read_data)
 schedule.every().hour.do(write_to_db)
 while True:
      schedule.run_pending()
      time.sleep(1)
-    
