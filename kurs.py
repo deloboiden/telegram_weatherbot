@@ -43,18 +43,22 @@ def create_log(err,code):
     file = open('err.log','w')
     if code == 1:
         file.write("ошибка с чтением с датчиков : ")
+        display.lcd_display_string("err: write data", 1)
+        display.lcd_display_string("from sensors", 2)
     if code == 2:
         file.write("ошибка с выводом на экран : ")
     if code == 3:
-        file.write("ошибка с записью в базу данных : ")   
+        file.write("ошибка с записью в базу данных : ")
+        display.lcd_display_string("err: write data", 1)
+        display.lcd_display_string("to database", 2)
     file.write(str(err))
     file.close()
     
 def read_data():
+    global pressure
+    global temperature
+    global humidity
     try:
-        global pressure
-        global temperature
-        global humidity
         pressure,temperature1 = sensBMP() #read inf from BMP180
         humidity, temperature2 = sensDHT() #read inf from DHT22
         temperature = (temperature1 + temperature2)/2
@@ -79,10 +83,10 @@ def write_to_lcd():
         create_log(err,2)
 
 def write_to_db():
+    global timestamp
+    timestamp = datetime.datetime.now().timestamp()
+    data = (timestamp,temperature,pressure,humidity)
     try:
-        global timestamp
-        timestamp = datetime.datetime.now().timestamp()
-        data = (timestamp,temperature,pressure,humidity)
         sql = """INSERT INTO data
                 (timestamp,temperature,pressure,humidity)
                 VALUES (?,?,?,?)"""
