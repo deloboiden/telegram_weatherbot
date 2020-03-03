@@ -111,9 +111,9 @@ def write_to_db():
     else:
         conn.commit()
 
-schedule.every(1).minutes.do(read_data)
-schedule.every(1).minutes.do(write_to_lcd)
-schedule.every(1).hour.do(write_to_db)
-while True:
-     schedule.run_pending()
-     time.sleep(1)
+#schedule.every(1).minutes.do(read_data)
+#schedule.every(1).minutes.do(write_to_lcd)
+#schedule.every(1).hour.do(write_to_db)
+#while True:
+#     schedule.run_pending()
+#     time.sleep(1)

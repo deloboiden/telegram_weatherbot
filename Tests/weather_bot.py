@@ -76,9 +76,9 @@ class Weather_bot(telepot.helper.ChatHandler):
             except sqlite3.DatabaseError as err:
                 self.bot.sendMessage(admin,"ошибка с чтением из базы данных "+str(err))
             temp,pres,humi, = cursor.fetchone()
-            self.sender.sendMessage ("temperature: "+str("%.2f"%round(temp,2))+" C")
-            self.sender.sendMessage ("pressure: "+str("%.2f"%round(pres,2))+" mm Hg")
-            self.sender.sendMessage ("humidity: "+str("%.2f"%round(humi,2))+" %")
+            self.sender.sendMessage ("temperature: "+str("%.2f"%round(temp,2))+" C \n"+
+            "pressure: "+str("%.2f"%round(pres,2))+" mm Hg \n" +
+            "humidity: "+str("%.2f"%round(humi,2))+" %")
         elif command == 'weather now':
             try:
                 cursor.execute("select pressure from data order by id desc LIMIT 1")
@@ -201,19 +201,19 @@ class Weather_bot(telepot.helper.ChatHandler):
         self.sender.sendMessage ("Good bye" ,reply_markup=self.markup)
         self.close()
 
-bot = telepot.DelegatorBot(TOKEN,[
-    pave_event_space()(
-        per_chat_id(), create_open, Weather_bot, timeout=90),
-])
-MessageLoop(bot).run_as_thread()
-print('Listening ...')
+#bot = telepot.DelegatorBot(TOKEN,[
+#    pave_event_space()(
+#        per_chat_id(), create_open, Weather_bot, timeout=90),
+#])
+#MessageLoop(bot).run_as_thread()
+#print('Listening ...')
 
-while 1:
-    time.sleep(10)
-    file = open('err.log', 'r')
-    data = file.read()
-    if ( data != ""):
-        bot.sendMessage(admin,data)
-        file.close
-        file = open('err.log', 'w')
-    file.close()
+#while 1:
+#    time.sleep(10)
+#    file = open('err.log', 'r')
+#    data = file.read()
+#    if ( data != ""):
+#        bot.sendMessage(admin,data)
+#        file.close
+#        file = open('err.log', 'w')
+#    file.close()
