@@ -1,10 +1,4 @@
-import time, datetime
-import sqlite3
-import matplotlib.pyplot as plt
 from weather_bot import Weather_bot
-
-conn = sqlite3.connect("weather_data.db")
-cursor = conn.cursor()
 
 def test_weathernow1():
     answer = Weather_bot.weather_now(Weather_bot, 700)

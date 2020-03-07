@@ -201,19 +201,19 @@ class Weather_bot(telepot.helper.ChatHandler):
         self.sender.sendMessage ("Good bye" ,reply_markup=self.markup)
         self.close()
 
-#bot = telepot.DelegatorBot(TOKEN,[
-#    pave_event_space()(
-#        per_chat_id(), create_open, Weather_bot, timeout=90),
-#])
-#MessageLoop(bot).run_as_thread()
-#print('Listening ...')
+bot = telepot.DelegatorBot(TOKEN,[
+    pave_event_space()(
+        per_chat_id(), create_open, Weather_bot, timeout=90),
+])
+MessageLoop(bot).run_as_thread()
+print('Listening ...')
 
-#while 1:
-#    time.sleep(10)
-#    file = open('err.log', 'r')
-#    data = file.read()
-#    if ( data != ""):
-#        bot.sendMessage(admin,data)
-#        file.close
-#        file = open('err.log', 'w')
-#    file.close()
+while 1:
+    time.sleep(10)
+    file = open('err.log', 'r')
+    data = file.read()
+    if ( data != ""):
+        bot.sendMessage(admin,data)
+        file.close
+        file = open('err.log', 'w')
+    file.close()

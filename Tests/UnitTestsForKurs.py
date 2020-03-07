@@ -21,15 +21,15 @@ def test_SensBMP():
     pressure1,temperature1 = kurs.sensBMP()
     pressure2 = sense.pressure*100
     temperature2 = sense.temp
-    assert temperature1 - temperature2 < 0.01
-    assert pressure1 - pressure2 < 0.01
+    assert abs(temperature1 - temperature2) < 0.01
+    assert abs(pressure1 - pressure2) < 0.01
     
 def test_SensDHT():
     humidity1, temperature1 = kurs.sensDHT()
     humidity2 = sense.humidity
     temperature2 = sense.temp
-    assert temperature1 - temperature2 < 0.01
-    assert humidity1 - humidity2 < 0.01
+    assert abs(temperature1 - temperature2) < 0.01
+    assert abs(humidity1 - humidity2) < 0.01
     
 def test_write_to_lcd1():
     kurs.temperature = 25.4
@@ -85,9 +85,9 @@ def test_create_log3():
     
 def test_read_data1():
     kurs.read_data()
-    assert kurs.temperature - sense.temp < 0.01
-    assert kurs.humidity - sense.humidity < 0.01
-    assert (sense.pressure/1.33322) - kurs.pressure < 0.02
+    assert abs(kurs.temperature - sense.temp) < 0.01
+    assert abs(kurs.humidity - sense.humidity) < 0.01
+    assert abs((sense.pressure/1.33322) - kurs.pressure) < 0.02
     
 def test_read_data2():
     print("выставь в sense HAT Emulator давление ниже 800m mbar, у вас 10 сек")
@@ -106,5 +106,3 @@ def test_read_data3():
                               +"температура2 вышла за рамки допустимого: "+ str(sense.temp))
     assert compareDataInFiles('l1.txt',"err: write data")
     assert compareDataInFiles('l2.txt',"from sensors")
-    
-    
