@@ -1,1 +1,1 @@
-from sensors
+temp24.98Hum45.09
