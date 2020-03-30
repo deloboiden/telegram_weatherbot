@@ -15,15 +15,15 @@ def normal_handler(event):
     #print(event)
     if event.photo:
         print("photo")
-        event.download_media("photo")
-    file = open("messages.txt",'w') 
+        event.download_media("photo") 
     print(event.message.to_dict()['message'])
     print(event.message.to_dict()['reply_markup'])
     file.write(event.message.to_dict()['message']+"\n")
     file.write(str(event.message.to_dict()['reply_markup'])+"\n")
     file.flush()
-    file.close()
-      
+
+file = open("messages.txt",'w')    
+
 client.start()
 
 client.send_message('wettther_bot', 'hello')
@@ -36,7 +36,11 @@ client.send_message('wettther_bot', 'weather predict')
 time.sleep(1)
 client.send_message('wettther_bot', 'statistic')
 time.sleep(1)
+client.send_message('wettther_bot', 'week')
+time.sleep(1)
+client.send_message('wettther_bot', 'back')
+time.sleep(1)
 client.send_message('wettther_bot', 'back')
 
-
+file.close()
 client.run_until_disconnected()

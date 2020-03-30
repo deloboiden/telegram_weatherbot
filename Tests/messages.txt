@@ -1,0 +1,17 @@
+Good day
+{'_': 'ReplyKeyboardMarkup', 'rows': [{'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'data from sensors'}]}, {'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'weather now'}]}, {'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'weather predict'}]}, {'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'statistic'}]}], 'resize': False, 'single_use': False, 'selective': False}
+temperature: 24.98 C 
+pressure: 759.83 mm Hg 
+humidity: 45.09 %
+None
+here weather for now: 
+now variable clarity, possible wind, typical weather for St. Petersburg
+None
+Sorry, we don't have actual data right now
+None
+Нет данных за последние 10 часов
+None
+statistic
+{'_': 'ReplyKeyboardMarkup', 'rows': [{'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'day'}]}, {'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': '3 days'}]}, {'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'week'}]}, {'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'mounth'}]}, {'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'back to main'}]}], 'resize': False, 'single_use': False, 'selective': False}
+week
+{'_': 'ReplyKeyboardMarkup', 'rows': [{'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'temperature'}]}, {'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'pressure'}]}, {'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'humidity'}]}, {'_': 'KeyboardButtonRow', 'buttons': [{'_': 'KeyboardButton', 'text': 'back to main'}]}], 'resize': False, 'single_use': False, 'selective': False}
