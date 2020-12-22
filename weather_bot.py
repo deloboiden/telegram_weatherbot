@@ -179,10 +179,10 @@ if __name__ == "__main__":
 
     while 1:
         time.sleep(20)
-        file = open('err.log', 'r')
-        data = file.read()
-        if data:
-            bot.sendMessage(admin, data)
-            file.close()
-            file = open('err.log', 'w')
-        file.close()
+        #file = open('err.log', 'r')
+        #data = file.read()
+        #if data:
+            #bot.sendMessage(admin, data)
+            #file.close()
+            #file = open('err.log', 'w')
+        #file.close()
