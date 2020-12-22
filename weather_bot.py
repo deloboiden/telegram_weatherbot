@@ -167,7 +167,6 @@ class Weather_bot(telepot.helper.ChatHandler):
     def on__idle(self, event):
         self.markup = ReplyKeyboardRemove()
         self.sender.sendMessage("Good bye", reply_markup=self.markup)
-        self.close()
 
 
 if __name__ == "__main__":

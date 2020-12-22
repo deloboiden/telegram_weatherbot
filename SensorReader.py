@@ -8,7 +8,7 @@ import sys
 from BMP180 import BMP180
 
 
-class Sensors():
+class SensorReader():
 
     def __init__(self, dbPath, dhtPin):
         self.bmpSensor = BMP180()
@@ -98,7 +98,7 @@ class Sensors():
 
 
 if __name__ == "__main__":
-    sensors = Sensors("weather_data.db", 4)
+    sensors = SensorReader("weather_data.db", 4)
     schedule.every(1).minutes.do(sensors.read_data)
     schedule.every(1).minutes.do(sensors.print_data)
     # schedule.every(2).minutes.do(sensors.write_to_lcd)
