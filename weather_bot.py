@@ -2,7 +2,7 @@ import telepot
 import time, datetime
 import sqlite3
 import matplotlib.pyplot as plt
-from telepot.namedtuple import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, ForceReply
+from telepot.namedtuple import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from telepot.loop import MessageLoop
 from telepot.delegate import per_chat_id, create_open, pave_event_space
 
@@ -39,11 +39,11 @@ class Weather_bot(telepot.helper.ChatHandler):
         for i in range(0, len(pressureArray)):
             sumX += i
             sumX2 += i * i
-            sumY += arr[i]
-            sumXY += arr[i] * i
-        delta = len(arr) * sumXY - sumX * sumY
-        delta /= (len(arr) * sumX2 - sumX * sumX)
-        delta *= len(arr)
+            sumY += pressureArray[i]
+            sumXY += pressureArray[i] * i
+        delta = len(pressureArray) * sumXY - sumX * sumY
+        delta /= (len(pressureArray) * sumX2 - sumX * sumX)
+        delta *= len(pressureArray)
         if delta < -150:
             return "the weather will get worse very quickly"
         if -150 <= delta <= -50:
@@ -77,7 +77,7 @@ class Weather_bot(telepot.helper.ChatHandler):
     def SaveGraphic(self, x, y):
         plt.plot(x, y)
         plt.tight_layout()
-        plt.savefig('foo.png', type='png')
+        plt.savefig('graphic.png', type='png')
         return 'graphic.png'
 
     def on_chat_message(self, msg):
@@ -91,17 +91,17 @@ class Weather_bot(telepot.helper.ChatHandler):
                 cursor.execute("""select temperature,pressure,
                 humidity from data order by id desc LIMIT 1""")
             except sqlite3.DatabaseError as err:
-                self.bot.sendMessage(admin, "РѕС€РёР±РєР° СЃ С‡С‚РµРЅРёРµРј РёР· Р±Р°Р·С‹ РґР°РЅРЅС‹С… " + str(err))
+                self.bot.sendMessage(admin, "error with database" + str(err))
             else:
                 temp, pres, humi, = cursor.fetchone()
                 self.sender.sendMessage("temperature: %.2f C" % round(temp, 2))
                 self.sender.sendMessage("pressure: %.2f mm Hg" % round(pres, 2))
-                self.sender.sendMessage("humidity: %.2f %" % round(humi, 2))
+                self.sender.sendMessage("humidity: %.2f " % round(humi, 2))
         elif command == 'weather now':
             try:
                 cursor.execute("select pressure from data order by id desc LIMIT 1")
             except sqlite3.DatabaseError as err:
-                self.bot.sendMessage(admin, "РѕС€РёР±РєР° СЃ С‡С‚РµРЅРёРµРј РёР· Р±Р°Р·С‹ РґР°РЅРЅС‹С… " + str(err))
+                self.bot.sendMessage(admin, "error with database" + str(err))
             else:
                 pres, = cursor.fetchone()
                 self.sender.sendMessage("here weather for now:")
@@ -115,11 +115,11 @@ class Weather_bot(telepot.helper.ChatHandler):
                 for row in cursor.execute(sql):
                     pressureArray.append(row[0])
             except sqlite3.DatabaseError as err:
-                self.bot.sendMessage(admin, "РѕС€РёР±РєР° СЃ С‡С‚РµРЅРёРµРј РёР· Р±Р°Р·С‹ РґР°РЅРЅС‹С… " + str(err))
+                self.bot.sendMessage(admin, "error with database" + str(err))
             else:
-                if len(arr) < 7:
+                if len(pressureArray) < 7:
                     self.sender.sendMessage("Sorry, we don't have actual data right now")
-                    self.bot.sendMessage(admin, "РќРµС‚ РґР°РЅРЅС‹С… Р·Р° РїРѕСЃР»РµРґРЅРёРµ 10 С‡Р°СЃРѕРІ")
+                    self.bot.sendMessage(admin, "no data for week")
                 else:
                     self.sender.sendMessage("here weather predict for now:")
                     self.sender.sendMessage(self.weather_predict(pressureArray))
@@ -159,9 +159,10 @@ class Weather_bot(telepot.helper.ChatHandler):
                     x.append(datetime.datetime.fromtimestamp(row[0]))
                     y.append(row[1])
             except sqlite3.DatabaseError as err:
-                self.bot.sendMessage(admin, "РѕС€РёР±РєР° СЃ С‡С‚РµРЅРёРµРј РёР· Р±Р°Р·С‹ РґР°РЅРЅС‹С… " + str(err))
+                self.bot.sendMessage(admin, "error with database" + str(err))
             else:
-                self.sender.sendPhoto(open(SaveGraphic(x, y), 'rb'))
+                path = self.SaveGraphic(x, y)
+                self.sender.sendPhoto(open(path, 'rb'))
 
     def on__idle(self, event):
         self.markup = ReplyKeyboardRemove()
@@ -181,8 +182,8 @@ if __name__ == "__main__":
         time.sleep(20)
         file = open('err.log', 'r')
         data = file.read()
-        if (data != ""):
+        if data:
             bot.sendMessage(admin, data)
-            file.close
+            file.close()
             file = open('err.log', 'w')
         file.close()
